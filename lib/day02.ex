@@ -27,6 +27,19 @@ defmodule Aoc.Day02 do
     end)
   end
 
+  defp navigate_by_aim(input) do
+    Enum.reduce(input, %{horizontal: 0, depth: 0, aim: 0}, fn
+      {:forward, value}, %{horizontal: horizontal, depth: depth, aim: aim} = acc ->
+        %{acc | horizontal: horizontal + value, depth: depth + aim * value}
+
+      {:up, value}, %{aim: aim} = acc ->
+        %{acc | aim: aim - value}
+
+      {:down, value}, %{aim: aim} = acc ->
+        %{acc | aim: aim + value}
+    end)
+  end
+
   defp multiply(%{horizontal: horizontal, depth: depth}), do: horizontal * depth
 
   def part1 do
@@ -37,5 +50,7 @@ defmodule Aoc.Day02 do
 
   def part2 do
     get_input()
+    |> navigate_by_aim()
+    |> multiply()
   end
 end
